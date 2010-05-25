@@ -1,8 +1,10 @@
+<html>
+<head>
 <script src="emile.js"></script>
-
+</head>
+<body>
 <div id="test1" style="position:absolute;left:0px;background:#f00;opacity:0">test</div>
 <div id="test2" style="border:0px solid #00ff00;position:absolute;left:0px;top:400px;background:#0f0">test</div>
-
 <script>
   emile('test2', 'left:300px;padding:10px;border:50px solid #ff0000', {
     duration: 500,
@@ -12,7 +14,7 @@
       });
     }
   });
-  
+
   function bounce(pos) {
     if (pos < (1/2.75)) {
         return (7.5625*pos*pos);
@@ -25,3 +27,5 @@
     }
   }
 </script>
+</body>
+</html>

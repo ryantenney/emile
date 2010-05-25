@@ -6,12 +6,6 @@
 * Doesn't need a JavaScript framework
 * Full set of CSS properties for animation (length-based and colors)
 * Easing and callbacks
-* Less than 50 lines of code
-
-Get updates on Twitter: <http://twitter.com/emilejs>
-
-Also see the video of my presentation at Fronteers 2009:
-<http://fronteers.nl/congres/2009/sessions/roll-your-own-effects-framework>
 
 ### Targeted platforms ###
 
