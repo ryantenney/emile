@@ -16,36 +16,23 @@
 		return (source + (target - source) * pos).toFixed(3);
 	}
 
-	function substr(str, pos, len) {
-		return str.substr(pos, len || 1);
-	}
-
 	function color(source,target,pos) {
 		var i = 2,
 			j, arg, tmp,
 			v = [], r = [];
 
-		//while (i--) {
-			//j = 3;
-			//arg = arguments[i];
-
-		while (j = 3, arg = arguments[i - 1], i--) {
-			if (substr(arg, 0) === 'r') {
+		while (j = 3, arg = arguments[i - 1], i--) { /*! lint !*/
+			if (arg[0] === 'r') {
 				arg = arg.match(/\d+/g);
 				while (j--) {
 					v.push(~~arg[j]);
 				}
 			} else {
 				if (arg.length === 4) {
-					tmp = {
-						r : substr(arg, 1),
-						g : substr(arg, 2),
-						b : substr(arg, 3)
-					};
-					arg = '#' + tmp.r + tmp.r + tmp.g + tmp.g + tmp.b + tmp.b;
+					arg = '#' + arg[1] + arg[1] + arg[2] + arg[2] + arg[3] + arg[3];
 				}
 				while (j--) {
-					v.push(parseInt(substr(arg, 1 + j * 2, 2), 16));
+					v.push(parseInt(arg.substr(1 + j * 2, 2), 16));
 				}
 			}
 		}
@@ -72,15 +59,34 @@
 		parseEl.innerHTML = '<div style="' + style + '"></div>';
 		css = parseEl.childNodes[0].style;
 
-		while(i--) {
-			/*! TODO - LINT: Expected a conditional expression and instead saw an assignment. (char 19) !*/
+		while (i--) {
 			if (v = css[props[i]]) { /*! lint !*/
 				rules[props[i]] = parse(v);
 			}
 		}
 
 		return rules;
-	}  
+	}
+
+	function worker(el, current, target, start, finish, dur, interval, easing, opts, after) {
+		var time = +new Date(),
+			pos = time > finish ? 1 : (time - start) / dur,
+			prop;
+
+		for (prop in target) { /*! lint !*/
+			el.style[prop] = target[prop].f(current[prop].v, target[prop].v, easing(pos)) + target[prop].u;
+		}
+
+		if (time > finish) {
+			clearInterval(interval);
+			if (opts.after) {
+				opts.after();
+			}
+			if (after) {
+				setTimeout(after, 1);
+			}
+		}
+	}
 
 	container[emile] = function (el, style, opts, after) {
 		el = typeof el === 'string' ? document.getElementById(el) : el;
@@ -95,30 +101,12 @@
 			dur = opts.duration || 200,
 			finish = start + dur;
 
-		/*! TODO - LINT: The body of a for in should be wrapped in an if statement to filter unwanted properties from the prototype. (char 9) !*/
 		for (prop in target) { /*! lint !*/
 			current[prop] = parse(comp[prop]);
 		}
 
 		interval = setInterval(function () {
-				var time = +new Date(),
-					pos = time > finish ? 1 : (time - start) / dur,
-					prop;
-
-				/*! TODO - LINT: The body of a for in should be wrapped in an if statement to filter unwanted properties from the prototype. (char 17) !*/
-				for (prop in target) { /*! lint !*/
-					el.style[prop] = target[prop].f(current[prop].v, target[prop].v, easing(pos)) + target[prop].u;
-				}
-
-				if (time > finish) {
-					clearInterval(interval);
-					if (opts.after) {
-						opts.after();
-					}
-					if (after) {
-						setTimeout(after, 1);
-					}
-				}
+				worker(el, current, target, start, finish, dur, interval, easing, opts, after);
 			}, 10);
 	};
 
