@@ -3,7 +3,7 @@
 // emile.js (c) 2009 Thomas Fuchs
 // Licensed under the terms of the MIT license.
 
-(function(emile, container){
+(function (emile, container) {
 
 	var parseEl = document.createElement('div'),
 		props = ['backgroundColor','borderBottomColor','borderBottomWidth','borderLeftColor','borderLeftWidth',
@@ -16,23 +16,25 @@
 		return (source + (target - source) * pos).toFixed(3);
 	}
 
-	function color(source,target,pos) {
+	function substr(str, pos) {
+		return str.substr(pos, 1);
+	}
+
+	function color(source, target, pos) {
 		var i = 2,
 			j, arg, tmp,
 			v = [], r = [];
 
 		while (j = 3, arg = arguments[i - 1], i--) { /*! lint !*/
-			if (arg[0] === 'r') {
+			if (arg[0] == 'r') {
 				arg = arg.match(/\d+/g);
 				while (j--) {
 					v.push(~~arg[j]);
 				}
 			} else {
-				if (arg.length === 4) {
-					arg = '#' + arg[1] + arg[1] + arg[2] + arg[2] + arg[3] + arg[3];
-				}
+				tmp = arg.length == 4 ? 0 : 1;
 				while (j--) {
-					v.push(parseInt(arg.substr(1 + j * 2, 2), 16));
+					v.push(parseInt(substr(arg, j * 2) + substr(arg, j * 2 + tmp), 16));
 				}
 			}
 		}
@@ -69,7 +71,7 @@
 	}
 
 	function worker(el, current, target, start, finish, dur, interval, easing, opts, after) {
-		var time = +new Date(),
+		var time = +new Date,
 			pos = time > finish ? 1 : (time - start) / dur,
 			prop;
 
@@ -89,7 +91,7 @@
 	}
 
 	container[emile] = function (el, style, opts, after) {
-		el = typeof el === 'string' ? document.getElementById(el) : el;
+		el = typeof el == 'string' ? document.getElementById(el) : el;
 		opts = opts || {};
 
 		var prop, interval,

@@ -37,4 +37,4 @@ One method:
 ### License ###
 
 Émile is is licensed under the terms of the MIT License, see the included MIT-LICENSE file.
-Émile borrows its name from <http://en.wikipedia.org/wiki/Émile_Cohl>.
+Émile borrows its name from [Émile Cohl](http://en.wikipedia.org/wiki/Émile_Cohl).
